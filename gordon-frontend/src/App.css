@@ -1,0 +1,94 @@
+/* Two-Panel Gordon Interface */
+.gordon-interface {
+  display: flex;
+  height: 100vh;
+  background: url('./bread-background.jpg') center/cover;
+  background-color: #ffcc00; /* Fallback bread yellow */
+}
+
+/* Left Panel - Live Transcript */
+.transcript-panel {
+  flex: 1;
+  background: rgba(139, 69, 19, 0.9); /* Brown overlay */
+  margin: 20px;
+  border-radius: 15px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.transcript-panel h2 {
+  color: #000;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: serif;
+}
+
+.mic-icon {
+  width: 120px;
+  height: 120px;
+  background: #d2691e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.mic-icon::before {
+  content: "🎙️";
+  font-size: 3rem;
+}
+
+/* Right Panel - Timer & Memes */
+.tools-panel {
+  flex: 1;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.timer-section {
+  background: rgba(210, 105, 30, 0.9);
+  border-radius: 15px;
+  padding: 30px;
+  text-align: center;
+  color: #000;
+}
+
+.timer-section h3 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  font-family: serif;
+}
+
+.meme-section {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.meme-image {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .gordon-interface {
+    flex-direction: column;
+  }
+  
+  .transcript-panel, .tools-panel {
+    flex: none;
+    height: 50vh;
+  }
+}

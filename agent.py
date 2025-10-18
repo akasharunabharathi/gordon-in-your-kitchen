@@ -1,22 +1,14 @@
 from dotenv import load_dotenv
 
 from livekit import agents
-from livekit.agents import AgentSession, Agent, RoomInputOptions
+from livekit.agents import AgentSession, Agent, RoomInputOptions, RoomOutputOptions
 from livekit.plugins import noise_cancellation, silero
+from livekit.agents import ChatContext, ChatMessage
+from livekit.agents import UserInputTranscribedEvent
+from cookbook_pdf import search_cookbook
 # from livekit.plugins.turn_detector.multilingual import MultilingualModel
 
 load_dotenv(".env.local")
-
-
-class Assistant(Agent):
-    def __init__(self) -> None:
-        super().__init__(
-            instructions="""You are a helpful voice AI assistant.
-            You eagerly assist users with their questions by providing information from your extensive knowledge.
-            Your responses are concise, to the point, and without any complex formatting or punctuation including emojis, asterisks, or other symbols.
-            You are curious, friendly, and have a sense of humor.""",
-        )
-
 
 class TemuGordon(Agent):
     def __init__(self) -> None:
@@ -40,6 +32,7 @@ async def entrypoint(ctx: agents.JobContext):
         tts="elevenlabs/eleven_turbo_v2_5:Xb7hH8MSUJpSbSDYk0k2",
         vad=silero.VAD.load(),
         # turn_detection=MultilingualModel(),
+        use_tts_aligned_transcript=True,
     )
 
     await session.start(
@@ -47,12 +40,33 @@ async def entrypoint(ctx: agents.JobContext):
         agent=TemuGordon(),
         room_input_options=RoomInputOptions(
             # For telephony applications, use `BVCTelephony` instead for best results
-            noise_cancellation=noise_cancellation.BVC(), 
+            noise_cancellation=noise_cancellation.BVC()
         ),
+        # room_output_options=RoomOutputOptions(
+        #     transcription_enabled=True
+        # )
     )
 
     await session.generate_reply(
         instructions="Greet the user and offer your assistance."
+    )
+
+
+    @session.on("user_input_transcribed")
+    def on_user_input_transcribed(event: UserInputTranscribedEvent):
+        print(f"User input transcribed: {event.transcript}, "
+            f"language: {event.language}, "
+            f"final: {event.is_final}, "
+            f"speaker id: {event.speaker_id}")
+
+
+async def on_user_turn_completed(
+    self, turn_ctx: ChatContext, new_message: ChatMessage,
+) -> None:
+    rag_content = await search_cookbook(new_message.text_content())
+    turn_ctx.add_message(
+        role="assistant", 
+        content=f"Additional information relevant to the user's next message: {rag_content}"
     )
 
 
