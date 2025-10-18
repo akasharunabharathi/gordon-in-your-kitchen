@@ -1,9 +1,9 @@
 # gordon-in-your-kitchen
 Gordon Ramsay on call when cooking?
 
-# Gordon Ramsay Voice Agent
+# Gordon in Da House!
 
-A RAG-enabled voice agent featuring Gordon Ramsay's culinary expertise, built with LiveKit for real-time voice conversation and enhanced with retrieval-augmented generation over cooking documentation.
+A RAG-enabled voice agent featuring Gordon Ramsay's personality, a cookbook's culinary expertise (wish I could have Gordon's expertise as well, but I reckon his cookbook isn't free if he's written one 😐), built with LiveKit for real-time voice conversation and enhanced with retrieval-augmented generation over cooking documentation.
 
 ## Project Overview
 
